@@ -2,16 +2,14 @@ package activeRecord;
 
 public class DBConnection {
 
-    private static DBConnection instance;
+  private static DBConnection instance;
 
-    private DBConnection() {
+  private DBConnection(){
 
-    }
+  }
 
-    public static synchronized DBConnection getInstance() {
-        if (instance == null) {
-            instance = new DBConnection();
-        }
-        return instance;
-    }
+  public static synchronized DBConnection getInstance(){
+    if (instance == null) instance = new DBConnection();
+    return instance;
+  }
 }
