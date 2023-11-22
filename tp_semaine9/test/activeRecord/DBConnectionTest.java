@@ -15,5 +15,7 @@ class DBConnectionTest {
     Connection c2 = DBConnection.getInstance().getConnection();
 
     assertEquals(c1, c2, "ça devrait être la même connection !");
+    assertNotEquals(null, c1, "a ne doit pas être null");
+    assertNotEquals(null, c2, "a ne doit pas être null");
   }
 }
