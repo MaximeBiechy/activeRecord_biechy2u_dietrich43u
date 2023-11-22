@@ -7,19 +7,13 @@ import java.util.Properties;
 
 public class DBConnection {
 
-  private static DBConnection instance;
-  private Connection connect;
+  private static Connection connect;
 
-  DBConnection(){
-
+  public DBConnection(){
   }
 
-  public static synchronized DBConnection getInstance(){
-    if (instance == null) instance = new DBConnection();
-    return instance;
-  }
 
-  public Connection getConnection() throws SQLException {
+  public static synchronized Connection getConnection() throws SQLException {
     if (connect == null){
       // variables a modifier en fonction de la base
       String userName = "root";
