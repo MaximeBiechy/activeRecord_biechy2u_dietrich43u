@@ -7,13 +7,19 @@ import java.util.Properties;
 
 public class DBConnection {
 
+  private static DBConnection instance;
   private static Connection connect;
 
   public DBConnection(){
+
   }
 
+  public static synchronized DBConnection getInstance(){
+    if (instance == null) instance = new DBConnection();
+    return instance;
+  }
 
-  public static synchronized Connection getConnection() throws SQLException {
+  public synchronized Connection getConnection() throws SQLException {
     if (connect == null){
       // variables a modifier en fonction de la base
       String userName = "root";
@@ -32,7 +38,7 @@ public class DBConnection {
       connectionProps.put("password", password);
       String urlDB = "jdbc:mysql://" + serverName + ":";
       urlDB += portNumber + "/" + dbName;
-      Connection connect = DriverManager.getConnection(urlDB, connectionProps);
+      connect = DriverManager.getConnection(urlDB, connectionProps);
     }
 
     return connect;
