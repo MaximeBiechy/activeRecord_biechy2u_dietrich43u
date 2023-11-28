@@ -40,17 +40,15 @@ public class PrincipaleJDBC {
     }
 
     // ajout second personne
-    {
       Personne p = new Personne("Scott", "Ridley");
       p.save();
-  }
 
     // recuperation de toutes les personnes + affichage
     Personne.findAll();
     System.out.println();
 
     // suppression de la personne 1
-    Personne.delete(2);
+    p.delete();
 
     // recuperation de la seconde personne + affichage
     Personne.findById(1);

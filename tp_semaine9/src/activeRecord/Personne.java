@@ -116,12 +116,12 @@ public class Personne {
     stmt.executeUpdate(createString);
     System.out.println("1) creation table Personne\n");
   }
-  public static void delete(int id_personne) throws SQLException {
+  public void delete() throws SQLException {
     Connection connect = DBConnection.getInstance().getConnection();
     PreparedStatement prep = connect.prepareStatement("DELETE FROM Personne WHERE id=?");
-    prep.setInt(1, id_personne);
+    prep.setInt(1, this.id);
     prep.execute();
-    System.out.println("5) Suppression personne id " + id_personne + "");
+    System.out.println("5) Suppression personne id " + this.id + "");
     System.out.println();
   }
 
