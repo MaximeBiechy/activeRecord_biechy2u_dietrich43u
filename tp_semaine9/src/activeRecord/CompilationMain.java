@@ -1,14 +1,14 @@
-/*
+
 package activeRecord;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-*/
+
 /**
  * cette classe a juste pour objectif de verifier les noms des methodes
  */
-/*
+
 
 public class CompilationMain {
 
@@ -121,4 +121,4 @@ public class CompilationMain {
 
   }
 
-}*/
+}

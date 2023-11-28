@@ -25,7 +25,7 @@ public class Film {
 
     Connection connect = DBConnection.getInstance().getConnection();
     System.out.println("6) Recupere film d'id " + id_personne + "");
-    String SQLPrep = "SELECT * FROM Personne WHERE id=?;";
+    String SQLPrep = "SELECT * FROM Film WHERE id=?;";
     PreparedStatement prep1 = connect.prepareStatement(SQLPrep);
     prep1.setInt(1, id_personne);
     prep1.execute();
@@ -44,7 +44,7 @@ public class Film {
     return film;
   }
 
-  public static ArrayList<Film> finbByRealisateur(Personne p) throws SQLException {
+  public static ArrayList<Film> findByRealisateur(Personne p) throws SQLException {
     Connection connect = DBConnection.getInstance().getConnection();
     System.out.println("7) Recupere Film du réalisateur " + p.getId() + "");
     String SQLPrep = "SELECT * FROM Film WHERE ID_REA=?;";
@@ -69,7 +69,8 @@ public class Film {
     return list;
   }
 
-  public void save() throws SQLException {
+  public void save() throws SQLException, RealisateurAbsentException {
+    if (this.id_real == -1) throw new RealisateurAbsentException();
     if (this.id > -1){
       update();
     } else {
@@ -77,7 +78,7 @@ public class Film {
     }
   }
 
-  private void saveNew() throws SQLException {
+  private void saveNew() throws SQLException, RealisateurAbsentException {
     String SQLPrep = "INSERT INTO Film (titre, id_rea) VALUES (?, ?);";
     Connection connect = DBConnection.getInstance().getConnection();
 
@@ -97,9 +98,9 @@ public class Film {
     this.id = autoInc;
   }
 
-  private void update() throws SQLException {
+  private void update() throws SQLException, RealisateurAbsentException {
     Connection connect = DBConnection.getInstance().getConnection();
-    String SQLprep = "update Personne set nom=?, prenom=? where id=?;";
+    String SQLprep = "update Film set titre=?, id_rea=? where id=?;";
     PreparedStatement prep = connect.prepareStatement(SQLprep);
     prep.setString(1, this.titre);
     prep.setInt(2, this.id_real);

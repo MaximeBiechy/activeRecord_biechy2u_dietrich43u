@@ -13,7 +13,6 @@ public class PrincipaleJDBC {
   // IL FAUT PENSER A AJOUTER MYSQLCONNECTOR AU CLASSPATH
 
   public static void main(String[] args) throws SQLException {
-
     DBConnection db = DBConnection.getInstance();
     Connection connect = db.getConnection();
 
