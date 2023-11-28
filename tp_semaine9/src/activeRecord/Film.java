@@ -1,6 +1,7 @@
 package activeRecord;
 
 import java.sql.*;
+import java.util.ArrayList;
 
 public class Film {
 
@@ -41,6 +42,31 @@ public class Film {
     System.out.println();
 
     return film;
+  }
+
+  public static ArrayList<Film> finbByRealisateur(Personne p) throws SQLException {
+    Connection connect = DBConnection.getInstance().getConnection();
+    System.out.println("7) Recupere Film du réalisateur " + p.getId() + "");
+    String SQLPrep = "SELECT * FROM Film WHERE ID_REA=?;";
+    PreparedStatement prep1 = connect.prepareStatement(SQLPrep);
+    prep1.setInt(1, p.getId());
+    prep1.execute();
+    ResultSet rs = prep1.getResultSet();
+    // s'il y a des resultats
+    ArrayList<Film> list = new ArrayList<Film>();
+    while (rs.next()) {
+      Film film = null;
+      String titre = rs.getString("titre");
+      int id_rea = rs.getInt("id_rea");
+      film = new Film(titre, Personne.findById(id_rea));
+      int id = rs.getInt("id");
+      film.setId(id);
+      System.out.println("  -> (" + id + ") " + titre + ", " + id_rea);
+      list.add(film);
+    }
+    System.out.println();
+
+    return list;
   }
 
   public void save() throws SQLException {
