@@ -93,6 +93,22 @@ public class Personne {
     stmt.executeUpdate(createString);
     System.out.println("1) creation table Personne\n");
   }
+  public static void delete(int id_personne) throws SQLException {
+    Connection connect = DBConnection.getInstance().getConnection();
+    PreparedStatement prep = connect.prepareStatement("DELETE FROM Personne WHERE id=?");
+    prep.setInt(1, id_personne);
+    prep.execute();
+    System.out.println("5) Suppression personne id " + id_personne + "");
+    System.out.println();
+  }
+
+  public static void deleteTable() throws SQLException {
+    Connection connect = DBConnection.getInstance().getConnection();
+    String drop = "DROP TABLE Personne";
+    Statement stmt = connect.createStatement();
+    stmt.executeUpdate(drop);
+    System.out.println("10) Supprime table Personne");
+  }
 
   public void save() throws SQLException {
     if (this.id > -1){
@@ -110,14 +126,14 @@ public class Personne {
     prep.setString(1, this.nom);
     prep.setString(2, this.prenom);
     prep.executeUpdate();
+    System.out.println("3) ajout " + this.nom + ", " + this.prenom);
 
     int autoInc = -1;
     ResultSet rs = prep.getGeneratedKeys();
     if (rs.next()){
       autoInc = rs.getInt(1);
     }
-    System.out.println(" -> id utilise lors de l'ajout : ");
-    System.out.println(autoInc);
+    System.out.println(" -> id utilise lors de l'ajout : " + autoInc);
     System.out.println();
     this.id = autoInc;
   }

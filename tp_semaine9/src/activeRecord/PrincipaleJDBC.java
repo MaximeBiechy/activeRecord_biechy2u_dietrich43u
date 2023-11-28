@@ -50,13 +50,7 @@ public class PrincipaleJDBC {
     System.out.println();
 
     // suppression de la personne 1
-    {
-      PreparedStatement prep = connect.prepareStatement("DELETE FROM Personne WHERE id=?");
-      prep.setInt(1, 2);
-      prep.execute();
-      System.out.println("5) Suppression personne id 2 (Scott)");
-      System.out.println();
-    }
+    Personne.delete(2);
 
     // recuperation de la seconde personne + affichage
     Personne.findById(1);
@@ -95,15 +89,7 @@ public class PrincipaleJDBC {
     }
 
     // suppression de la table personne
-    {
-      String drop = "DROP TABLE Personne";
-      Statement stmt = connect.createStatement();
-      stmt.executeUpdate(drop);
-      System.out.println("10) Supprime table Personne");
-    }
-
-
-
+    Personne.deleteTable();
   }
 
 }
