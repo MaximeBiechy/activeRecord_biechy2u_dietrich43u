@@ -43,6 +43,46 @@ public class Film {
     return film;
   }
 
+  public void save() throws SQLException {
+    if (this.id > -1){
+      update();
+    } else {
+      saveNew();
+    }
+  }
+
+  private void saveNew() throws SQLException {
+    String SQLPrep = "INSERT INTO Film (titre, id_rea) VALUES (?, ?);";
+    Connection connect = DBConnection.getInstance().getConnection();
+
+    PreparedStatement prep = connect.prepareStatement(SQLPrep, Statement.RETURN_GENERATED_KEYS);
+    prep.setString(1, this.titre);
+    prep.setInt(2, this.id_real);
+    prep.executeUpdate();
+    System.out.println("3) ajout " + this.titre );
+
+    int autoInc = -1;
+    ResultSet rs = prep.getGeneratedKeys();
+    if (rs.next()){
+      autoInc = rs.getInt(1);
+    }
+    System.out.println(" -> id utilise lors de l'ajout : " + autoInc);
+    System.out.println();
+    this.id = autoInc;
+  }
+
+  private void update() throws SQLException {
+    Connection connect = DBConnection.getInstance().getConnection();
+    String SQLprep = "update Personne set nom=?, prenom=? where id=?;";
+    PreparedStatement prep = connect.prepareStatement(SQLprep);
+    prep.setString(1, this.titre);
+    prep.setInt(2, this.id_real);
+    prep.setInt(3, this.id);  // Use the current object's ID
+    prep.execute();
+    System.out.println("8) Effectue modification Film id " + this.id);
+    System.out.println();
+  }
+
   public Personne getRealisateur() throws SQLException {
     return Personne.findById(this.id_real);
   }
@@ -51,7 +91,7 @@ public class Film {
     Connection connect = DBConnection.getInstance().getConnection();
 
     String createString = "CREATE TABLE Film ( " + "ID INTEGER  AUTO_INCREMENT, "
-            + "TITRE varchar(40) NOT NULL, " + "ID_REA INTEGER DEFAULT NULL, " + "PRIMARY KEY (ID, ID_REA), )";
+            + "TITRE varchar(40) NOT NULL, " + "ID_REA INTEGER DEFAULT NULL, " + "PRIMARY KEY (ID) )";
     Statement stmt = connect.createStatement();
     stmt.executeUpdate(createString);
     System.out.println("1) creation table Film\n");
