@@ -46,6 +46,10 @@ public class Film {
     return film;
   }
 
+  public Personne getRealisateur() throws SQLException {
+    return Personne.findById(this.id_real);
+  }
+
 
   public String getTitre() {
     return titre;
