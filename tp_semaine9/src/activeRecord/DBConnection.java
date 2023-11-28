@@ -10,6 +10,8 @@ public class DBConnection {
   private static DBConnection instance;
   private static Connection connect;
 
+  private String nomDB = "testpersonne";
+
   public DBConnection(){
 
   }
@@ -30,7 +32,7 @@ public class DBConnection {
       String tableName = "personne";
 
       // iL faut une base nommee testPersonne !
-      String dbName = "testpersonne";
+      String dbName = nomDB;
 
       // creation de la connection
       Properties connectionProps = new Properties();
@@ -43,4 +45,17 @@ public class DBConnection {
 
     return connect;
   }
+
+  public synchronized void setNomDB(String nouveauNomDB) {
+    if (connect != null) {
+      try {
+        connect.close();
+      } catch (SQLException e) {
+        e.printStackTrace();
+      }
+      connect = null;
+    }
+    this.nomDB = nouveauNomDB;
+  }
+
 }
