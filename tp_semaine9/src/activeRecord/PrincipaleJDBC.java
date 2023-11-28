@@ -41,24 +41,9 @@ public class PrincipaleJDBC {
 
     // ajout second personne
     {
-      String SQLPrep = "INSERT INTO Personne (nom, prenom) VALUES (?,?);";
-      PreparedStatement prep = connect.prepareStatement(SQLPrep, Statement.RETURN_GENERATED_KEYS);
-      prep.setString(1, "Scott");
-      prep.setString(2, "Ridley");
-      prep.executeUpdate();
-      System.out.println("3) ajout Ridley Scott");
-
-      // recuperation de la derniere ligne ajoutee (auto increment)
-      // recupere le nouvel id
-      int autoInc = -1;
-      ResultSet rs = prep.getGeneratedKeys();
-      if (rs.next()) {
-        autoInc = rs.getInt(1);
-      }
-      System.out.print("  ->  id utilise lors de l'ajout : ");
-      System.out.println(autoInc);
-      System.out.println();
-    }
+      Personne p = new Personne("Scott", "Ridley");
+      p.save();
+  }
 
     // recuperation de toutes les personnes + affichage
     Personne.findAll();

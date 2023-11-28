@@ -1,9 +1,6 @@
 package activeRecord;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,7 +16,7 @@ public class Personne {
   }
 
 
-  public static List<Personne> findAll() throws SQLException {
+  public static ArrayList<Personne> findAll() throws SQLException {
     System.out.println("4) Recupere personne");
     String SQLPrep = "SELECT * FROM Personne;";
     Connection connect = DBConnection.getInstance().getConnection();
@@ -28,7 +25,7 @@ public class Personne {
     prep1.execute();
     ResultSet rs = prep1.getResultSet();
     // s'il y a un resultat
-    List<Personne> list = new ArrayList<Personne>();
+    ArrayList<Personne> list = new ArrayList<Personne>();
     while(rs.next()) {
       String nom = rs.getString("nom");
       String prenom = rs.getString("prenom");
@@ -87,5 +84,52 @@ public class Personne {
     return list;
   }
 
+  public static void createTable() throws SQLException {
+    Connection connect = DBConnection.getInstance().getConnection();
 
+    String createString = "CREATE TABLE Personne ( " + "ID INTEGER  AUTO_INCREMENT, "
+            + "NOM varchar(40) NOT NULL, " + "PRENOM varchar(40) NOT NULL, " + "PRIMARY KEY (ID))";
+    Statement stmt = connect.createStatement();
+    stmt.executeUpdate(createString);
+    System.out.println("1) creation table Personne\n");
+  }
+
+  public void save() throws SQLException {
+    if (this.id > -1){
+      update();
+    } else {
+      saveNew();
+    }
+  }
+
+  private void saveNew() throws SQLException {
+    String SQLPrep = "INSERT INTO Personne (nom, prenom) VALUES (?, ?);";
+    Connection connect = DBConnection.getInstance().getConnection();
+
+    PreparedStatement prep = connect.prepareStatement(SQLPrep, Statement.RETURN_GENERATED_KEYS);
+    prep.setString(1, this.nom);
+    prep.setString(2, this.prenom);
+    prep.executeUpdate();
+
+    int autoInc = -1;
+    ResultSet rs = prep.getGeneratedKeys();
+    if (rs.next()){
+      autoInc = rs.getInt(1);
+    }
+    System.out.println(" -> id utilise lors de l'ajout : ");
+    System.out.println(autoInc);
+    System.out.println();
+    this.id = autoInc;
+  }
+
+  private void update() throws SQLException {
+    Connection connect = DBConnection.getInstance().getConnection();
+    String SQLprep = "update Personne set nom=?, prenom=? where id=?;";
+    PreparedStatement prep = connect.prepareStatement(SQLprep);
+    prep.setString(1, "S_c_o_t_t");
+    prep.setString(2, "R_i_d_l_e_y");
+    prep.setInt(3, 2);
+    prep.execute();
+    System.out.println("8) Effectue modification Personne id 2");
+    System.out.println();  }
 }
