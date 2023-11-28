@@ -77,6 +77,7 @@ public class Personne {
       String prenom = rs.getString("prenom");
       personne = new Personne(nom, prenom);
       int id = rs.getInt("id");
+      personne.setId(id);
       System.out.println("  -> (" + id + ") " + nom + ", " + prenom);
     }
     System.out.println();
@@ -95,10 +96,12 @@ public class Personne {
     // s'il y a des resultats
     ArrayList<Personne> list = new ArrayList<Personne>();
     while (rs.next()) {
+      Personne personne = null;
       String nom = rs.getString("nom");
       String prenom = rs.getString("prenom");
-      Personne personne = new Personne(nom, prenom);
+      personne = new Personne(nom, prenom);
       int id = rs.getInt("id");
+      personne.setId(id);
       System.out.println("  -> (" + id + ") " + nom + ", " + prenom);
       list.add(personne);
     }
@@ -116,11 +119,13 @@ public class Personne {
     stmt.executeUpdate(createString);
     System.out.println("1) creation table Personne\n");
   }
+
   public void delete() throws SQLException {
     Connection connect = DBConnection.getInstance().getConnection();
     PreparedStatement prep = connect.prepareStatement("DELETE FROM Personne WHERE id=?");
     prep.setInt(1, this.id);
     prep.execute();
+    this.setId(-1);
     System.out.println("5) Suppression personne id " + this.id + "");
     System.out.println();
   }
