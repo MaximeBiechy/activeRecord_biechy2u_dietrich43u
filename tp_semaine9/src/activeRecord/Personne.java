@@ -136,8 +136,10 @@ public class Personne {
   public void save() throws SQLException {
     if (this.id > -1){
       update();
+      System.out.println("update");
     } else {
       saveNew();
+      System.out.println("new");
     }
   }
 
@@ -162,13 +164,14 @@ public class Personne {
   }
 
   private void update() throws SQLException {
-    Connection connect = DBConnection.getInstance().getConnection();
-    String SQLprep = "update Personne set nom=?, prenom=? where id=?;";
-    PreparedStatement prep = connect.prepareStatement(SQLprep);
-    prep.setString(1, "S_c_o_t_t");
-    prep.setString(2, "R_i_d_l_e_y");
-    prep.setInt(3, 2);
-    prep.execute();
-    System.out.println("8) Effectue modification Personne id 2");
-    System.out.println();  }
+      Connection connect = DBConnection.getInstance().getConnection();
+      String SQLprep = "update Personne set nom=?, prenom=? where id=?;";
+      PreparedStatement prep = connect.prepareStatement(SQLprep);
+      prep.setString(1, this.nom);
+      prep.setString(2, this.prenom);
+      prep.setInt(3, this.id);  // Use the current object's ID
+      prep.execute();
+      System.out.println("8) Effectue modification Personne id " + this.id);
+      System.out.println();
+    }
 }
